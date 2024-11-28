@@ -201,7 +201,8 @@
                 .then(response => response.text())
                 .then(data => {
                     alert(data);
-                    window.location.reload();
+                    // Redireciona para a página clientesid.php após o pedido ser finalizado com sucesso
+                    window.location.href = "clientesid.php";
                 })
                 .catch(error => console.error("Erro ao enviar o pedido:", error));
         });
