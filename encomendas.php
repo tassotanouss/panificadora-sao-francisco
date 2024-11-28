@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encomendas - Panificadora San Francisco</title>
     <style>
+        /* Seu estilo permanece igual */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -43,23 +44,6 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .encomenda-form input,
-        .encomenda-form textarea,
-        .encomenda-form button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-        .encomenda-form button {
-            background-color: #c47f4e;
-            color: white;
-            cursor: pointer;
-        }
-        .encomenda-form button:hover {
-            background-color: #925a33;
-        }
         .produto-item {
             margin: 15px 0;
         }
@@ -93,6 +77,26 @@
         .remover:hover {
             background-color: #d32f2f;
         }
+        .carrinho-form {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .carrinho-form input,
+        .carrinho-form button {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        .carrinho-form button {
+            background-color: #c47f4e;
+            color: white;
+            cursor: pointer;
+        }
+        .carrinho-form button:hover {
+            background-color: #925a33;
+        }
     </style>
 </head>
 <body>
@@ -100,89 +104,108 @@
         <h1>Encomendas - Panificadora San Francisco</h1>
 
         <p>Está com fome ou precisa de algo especial? A Panificadora San Francisco oferece deliciosos pães, bolos e muito mais, entregue na sua casa! Faça sua encomenda abaixo:</p>
-        
-        <!-- Formulário de Encomenda -->
-        <div class="encomenda-form">
-            <h2>Faça sua encomenda</h2>
-            <form action="encomendas.php" method="POST">
-                <input type="text" name="nome" placeholder="Seu nome" required>
-                <input type="email" name="email" placeholder="Seu e-mail" required>
-                <input type="tel" name="telefone" placeholder="Seu telefone" required>
-                <textarea name="descricao" placeholder="Descrição do pedido" rows="4" required></textarea>
-                <button type="submit">Enviar Encomenda</button>
-            </form>
-        </div>
 
-        <p>Confira alguns dos produtos disponíveis para encomenda:</p>
-
-        <!-- Produtos disponíveis com botão "Adicionar ao Carrinho" -->
         <div class="produto-item">
             <h3>Pão Artesanal</h3>
             <p>Delicioso pão caseiro feito com fermentação natural, crocante por fora e macio por dentro. Ideal para todas as ocasiões.</p>
             <p><strong>Preço: R$ 0,50</strong></p>
-            <button class="adicionar" data-nome="Pão Artesanal" data-preco="15.00">Adicionar ao Carrinho</button>
+            <p>Quantidade: <input type="number" class="quantidade" min="1" value="1"></p>
+            <button class="adicionar" data-nome="Pão Artesanal" data-preco="0.50">Adicionar ao Carrinho</button>
         </div>
         <div class="produto-item">
             <h3>Bolo de Fubá</h3>
             <p>Bolo fofinho e cheio de sabor, feito com fubá fresquinho, perfeito para um lanche da tarde.</p>
             <p><strong>Preço: R$ 20,00</strong></p>
+            <p>Quantidade: <input type="number" class="quantidade" min="1" value="1"></p>
             <button class="adicionar" data-nome="Bolo de Fubá" data-preco="20.00">Adicionar ao Carrinho</button>
         </div>
         <div class="produto-item">
             <h3>Biscoitos de Polvilho</h3>
             <p>Se você adora um petisco crocante, nossos biscoitos de polvilho são perfeitos. Feitos com carinho e tradição!</p>
             <p><strong>Preço: R$ 10,00</strong></p>
+            <p>Quantidade: <input type="number" class="quantidade" min="1" value="1"></p>
             <button class="adicionar" data-nome="Biscoitos de Polvilho" data-preco="10.00">Adicionar ao Carrinho</button>
         </div>
 
-        <!-- Carrinho -->
         <div class="carrinho">
             <h3>Itens no Carrinho</h3>
-            <ul id="carrinho-list">
-                <!-- Itens serão adicionados aqui -->
-            </ul>
+            <ul id="carrinho-list"></ul>
             <p>Total: <span id="total">R$ 0,00</span></p>
+
+            <div class="carrinho-form">
+                <form id="carrinho-form">
+                    <!-- Campo oculto para enviar o nome do usuário -->
+                    <input type="hidden" name="usuario" id="usuario" value="<?php echo $_SESSION['usuario']; ?>">
+
+                    <button type="submit">Finalizar Pedido</button>
+                </form>
+            </div>
         </div>
 
         <a href="index.php">Voltar ao início</a>
     </div>
 
     <script>
-        // Array para armazenar os itens do carrinho
         let carrinho = [];
 
-        // Função para atualizar a lista do carrinho e o total
         function atualizarCarrinho() {
             const carrinhoList = document.getElementById('carrinho-list');
             const totalElement = document.getElementById('total');
-            carrinhoList.innerHTML = ''; // Limpa a lista do carrinho
+            carrinhoList.innerHTML = '';
 
             let total = 0;
             carrinho.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.innerHTML = `${item.nome} - R$ ${item.preco} <button class="remover" onclick="removerItem(${index})">Remover</button>`;
+                li.innerHTML = `${item.nome} (x${item.quantidade}) - R$ ${(item.preco * item.quantidade).toFixed(2)}
+                <button class="remover" onclick="removerItem(${index})">Remover</button>`;
                 carrinhoList.appendChild(li);
-                total += parseFloat(item.preco);
+                total += parseFloat(item.preco * item.quantidade);
             });
 
             totalElement.textContent = `R$ ${total.toFixed(2)}`;
         }
 
-        // Função para remover um item do carrinho
         function removerItem(index) {
-            carrinho.splice(index, 1); // Remove o item do array
-            atualizarCarrinho(); // Atualiza a lista do carrinho
+            carrinho.splice(index, 1);
+            atualizarCarrinho();
         }
 
-        // Evento de clique para adicionar os itens ao carrinho
         document.querySelectorAll('.adicionar').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const nome = this.getAttribute('data-nome');
                 const preco = this.getAttribute('data-preco');
-                carrinho.push({ nome, preco });
-                atualizarCarrinho(); // Atualiza a lista do carrinho e o total
+                const quantidade = this.parentElement.querySelector('.quantidade').value;
+
+                carrinho.push({ nome, preco, quantidade });
+                atualizarCarrinho();
             });
+        });
+
+        document.getElementById('carrinho-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const usuario = document.getElementById('usuario').value;
+            const itensCarrinho = carrinho.map(item => ({
+                nome: item.nome,
+                preco: item.preco,
+                quantidade: item.quantidade
+            }));
+
+            const formData = new FormData();
+            formData.append("usuario", usuario);
+            formData.append("itensCarrinho", JSON.stringify(itensCarrinho));
+
+            fetch("dados_usuario.php", {  // Alteração do destino para dados_usuario.php
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    window.location.href = "dados_usuario.php";  // Redireciona para a página de dados do usuário
+                })
+                .catch(error => console.error("Erro ao enviar o pedido:", error));
         });
     </script>
 </body>
 </html>
+>
