@@ -1,37 +1,19 @@
 <?php
-
     if(isset($_POST['submit']))
     {
-/*     
+        include_once('config.php');
 
-        print_r('Nome:'. $_POST['nome']);
-        print_r('<br>');
-        print_r('Email: ' . $_POST['email']);
-        print_r('<br>');
-        print_r('Telefone: ' . $_POST['telefone']);
-        print_r('<br>');
-        print_r('Descrição: '. $_POST['descricao']);
-        print_r('<br>');
-        print_r('Endereço: ' . $_POST['endereco']);
-        print_r('<br>');
-        print_r('Referência: ' . $_POST['referencia']);
-     */
+        $nome = $_POST['nome'];
+        $email = $_POST['email'];
+        $telefone = $_POST['telefone'];
+        $descricao =  $_POST['descricao'];
+        $endereco =  $_POST['endereco'];
+        $referencia = $_POST['referencia'];
 
-include_once('config.php');
-
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $telefone = $_POST['telefone'];
-    $descricao =  $_POST['descricao'];
-    $endereco =  $_POST['endereco'];
-    $referencia = $_POST['referencia'];
-
-    $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,email,telefone,descricao,endereco,referencia)
-    VALUES ('$nome','$email','$telefone','$descricao','$endereco','$referencia')");
-    
-}
+        $result = mysqli_query($conexao, "INSERT INTO usuarios(nome,email,telefone,descricao,endereco,referencia)
+        VALUES ('$nome','$email','$telefone','$descricao','$endereco','$referencia')");
+    }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -116,7 +98,7 @@ include_once('config.php');
 </head>
 <body>
     <div class="box">
-        <form action="clientesid.php" method="POST">
+        <form action="dados_usuario.php" method="POST">
             <fieldset>
                 <legend><b>informações para entrega</b></legend>
                 <br>
