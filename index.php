@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panificadora San Francisco</title>
-    <link rel="shortcut icon" href="" type="image/x-icon">
 </head>
-
 <body>
+    <style>
+        background-image: url('https://png.pngtree.com/thumb_back/fw800/background/20230425/pngtree-bread-in-an-old-bakery-image_2513673.jpg');
+    </style>
     <header>
         <h1>Panificadora San Francisco</h1>
     </header>
