@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encomendas - Panificadora San Francisco</title>
     <style>
-        /* Seu estilo permanece igual */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -195,17 +194,17 @@
             formData.append("usuario", usuario);
             formData.append("itensCarrinho", JSON.stringify(itensCarrinho));
 
-            fetch("dados_usuario.php", {  // Alteração do destino para dados_usuario.php
+            fetch("processar_encomenda.php", {
                 method: "POST",
                 body: formData
             })
                 .then(response => response.text())
                 .then(data => {
-                    window.location.href = "dados_usuario.php";  // Redireciona para a página de dados do usuário
+                    alert(data);
+                    window.location.reload();
                 })
                 .catch(error => console.error("Erro ao enviar o pedido:", error));
         });
     </script>
 </body>
 </html>
->
